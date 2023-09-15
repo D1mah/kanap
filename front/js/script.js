@@ -53,7 +53,14 @@ for (let i = 0; i < products.length; i++) {
   const descriptionElement= document.createElement("p");
   descriptionElement.innerText=article.description;
   
-
+// ----------- article link attachement to displayed products
+// ----------- Rattachement du lien article aux produits affichés
+    
+sectionItems.appendChild(productLink);
+productLink.appendChild(productElement);
+productElement.appendChild(imageElement);
+productElement.appendChild(nameElement);
+productElement.appendChild(descriptionElement);
 
 }
 }
