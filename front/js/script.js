@@ -1,3 +1,5 @@
+import { strNoAccent } from "./format";
+
 // Fetching system from API to get products.
 // Récupération des produits depuis l'API
 const reponse= await fetch('http://localhost:3000/api/products/');
@@ -8,18 +10,6 @@ const products= await reponse.json();
 // Déclaration de la section produit index.html 
     const sectionItems = document.querySelector(".items");
 
-// formating function for URLs, replaces special characters. if I prefer name than id (accessiblity reasons) (to rework)    
-//  fonction pour traiter les accents des noms pour les URL ( à améliorer)
-export function strNoAccent(a) {
-    var b="áàâäãåçéèêëíïîìñóòôöõúùûüýÁÀÂÄÃÅÇÉÈÊËÍÏÎÌÑÓÒÔÖÕÚÙÛÜÝ",
-        c="aaaaaaceeeeiiiinooooouuuuyAAAAAACEEEEIIIINOOOOOUUUUY",
-        d="";
-    for(var i = 0, j = a.length; i < j; i++) {
-      var e = a.substr(i, 1);
-      d += (b.indexOf(e) !== -1) ? c.substr(b.indexOf(e), 1) : e;
-    }
-    return d;
-  };
 
 //  Product creation function
 // Fonction de création des produits
