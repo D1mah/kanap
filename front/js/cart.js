@@ -114,3 +114,67 @@ function generateCartPage(cart){
 
 generateCartPage(cart);
 // console.log(cart);
+
+// ------------ modifying settings
+    // display quantity and price sum at the page loading
+    // Calcul et affichage des totaux de quantité et prix, au chargement de la page.
+const totalQuantity=document.getElementById("totalQuantity");
+const totalPrice=document.getElementById("totalPrice");
+
+let qtyTotal=0;
+let priceTotal=0;
+
+for(let i=0; i<cart.length; i++){
+    qtyTotal+=parseInt(cart[i].qty);
+    priceTotal+= (parseInt(cart[i].qty) * parseInt(products.find(item=>item._id ===cart[i].id).price));
+}
+totalQuantity.innerText=qtyTotal;
+totalPrice.innerText=priceTotal;
+
+
+    // Event for quantities modification / save in localStorage / update price and quantities
+    // Event de Gestion des modifications de quantités / sauvegarde dans le localStorage / mise à jour du total Quantité et prix
+
+let qtyInput=document.querySelectorAll(".itemQuantity");
+    // querySelectorAll donne une collection d'élément de la classe itemQuantity, il faut boucler sur ce tableau pour appliquer l'event sur tous les input de modification.
+qtyInput.forEach(el => {el.addEventListener('change', function(){
+    const currentElement=el.closest('article') ;
+    let initialQty=cart.find(i => i.id === currentElement.dataset.id && i.color === currentElement.dataset.color).qty;
+    let itemToModify= cart.find(i => i.id === currentElement.dataset.id && i.color === currentElement.dataset.color);
+    itemToModify.qty=parseInt(this.value);
+    saveCart(cart); 
+
+            // display quantity and price sum at the page loading
+            // Calcul et affichage des totaux de quantité et prix, au chargement de la page.
+    let qtyDifference=parseInt(itemToModify.qty)-parseInt(initialQty);
+    qtyTotal+=qtyDifference;
+
+    let priceDifference = (qtyDifference *parseInt(products.find(item=>item._id ===itemToModify.id).price));
+    priceTotal+=priceDifference;
+    totalQuantity.innerText=qtyTotal;
+    totalPrice.innerText=priceTotal;
+});
+});
+
+    // EVent to remove completely an item
+    // Gestion de la suppression complète d'un item
+let deleteItems=document.querySelectorAll(".deleteItem");
+deleteItems.forEach(el => {el.addEventListener('click', function(){
+    const currentElement=el.closest('article') ;
+    let itemToDelete= cart.indexOf(cart.find(i => i.id === currentElement.dataset.id && i.color === currentElement.dataset.color));
+    let qtyExpectedToBeDeleted=cart[itemToDelete].qty;
+    let itemToDeleteId=cart[itemToDelete].id;
+    console.log(itemToDelete);
+    console.log(itemToDeleteId);
+    console.log(qtyExpectedToBeDeleted);
+
+    cart.splice(itemToDelete, 1);
+    qtyTotal-=parseInt(qtyExpectedToBeDeleted);
+    priceTotal-=(parseInt(qtyExpectedToBeDeleted)* parseInt(products.find(item=>item._id ===itemToDeleteId).price));
+    saveCart(cart);
+    document.location.reload()
+    totalQuantity.innerText=qtyTotal;
+    totalPrice.innerText=priceTotal;
+
+});
+});
