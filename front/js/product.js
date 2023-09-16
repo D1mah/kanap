@@ -1,4 +1,5 @@
 import { strNoAccent } from "./format.js";
+import { saveCart, getCart, deleteCart } from "./localstorage.js";
 
 // ------------ Fetching system from API to get products.
 // ------------ Récupération des produits depuis l'API
