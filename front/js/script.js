@@ -34,8 +34,8 @@ for (let i = 0; i < products.length; i++) {
 // Création d’une balise dédiée à un produit
   const productElement = document.createElement("article");
 
-// tags creation
-// Création des balises 
+// Tags creation and filling 
+// Création et remplisage des balises 
   const imageElement = document.createElement("img");
       imageElement.src = article.imageUrl;
       imageElement.alt= article.altTxt;
