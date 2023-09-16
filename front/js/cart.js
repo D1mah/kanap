@@ -3,7 +3,8 @@ import { saveCart, getCart, deleteCart } from "./localstorage.js";
 // ------------ Fetching system from API to get products.
 // ------------ Récupération des produits depuis l'API
 const reponse= await fetch('http://localhost:3000/api/products/');
-const products= await reponse.json();
+// in cart.js, ther is a little change, produits concerns API fetching, products will be use below
+const produits= await reponse.json();
 
 
 // getting Cart
@@ -43,8 +44,8 @@ function generateCartPage(cart){
             const imageSection=document.createElement("div");
                 imageSection.className="cart__item__img";
                     const imageElement= document.createElement("img");
-                        imageElement.src=products.find(i => i.name === item.name).imageUrl;
-                        imageElement.alt=products.find(i => i.name === item.name).altTxt;
+                        imageElement.src=produits.find(i => i.name === item.name).imageUrl;
+                        imageElement.alt=produits.find(i => i.name === item.name).altTxt;
     
             
             // content tag
@@ -60,7 +61,7 @@ function generateCartPage(cart){
                             const colorElement= document.createElement("p");
                                 colorElement.innerText=item.color;
                             const priceElement= document.createElement("p");
-                                priceElement.innerText=`${products.find(i => i.name === item.name).price} €`;
+                                priceElement.innerText=`${produits.find(i => i.name === item.name).price} €`;
                     
                     // tags for handleable settings (quantity and removal)
                     // balises liées aux paramètres modifiables (quantité et suppression)
@@ -126,7 +127,7 @@ let priceTotal=0;
 
 for(let i=0; i<cart.length; i++){
     qtyTotal+=parseInt(cart[i].qty);
-    priceTotal+= (parseInt(cart[i].qty) * parseInt(products.find(item=>item._id ===cart[i].id).price));
+    priceTotal+= (parseInt(cart[i].qty) * parseInt(produits.find(item=>item._id ===cart[i].id).price));
 }
 totalQuantity.innerText=qtyTotal;
 totalPrice.innerText=priceTotal;
@@ -156,7 +157,7 @@ qtyInput.forEach(el => {el.addEventListener('change', function(){
 });
 });
 
-    // EVent to remove completely an item
+    // Event to remove completely an item
     // Gestion de la suppression complète d'un item
 let deleteItems=document.querySelectorAll(".deleteItem");
 deleteItems.forEach(el => {el.addEventListener('click', function(){
@@ -170,7 +171,7 @@ deleteItems.forEach(el => {el.addEventListener('click', function(){
 
     cart.splice(itemToDelete, 1);
     qtyTotal-=parseInt(qtyExpectedToBeDeleted);
-    priceTotal-=(parseInt(qtyExpectedToBeDeleted)* parseInt(products.find(item=>item._id ===itemToDeleteId).price));
+    priceTotal-=(parseInt(qtyExpectedToBeDeleted)* parseInt(produits.find(item=>item._id ===itemToDeleteId).price));
     saveCart(cart);
     document.location.reload()
     totalQuantity.innerText=qtyTotal;
@@ -178,3 +179,98 @@ deleteItems.forEach(el => {el.addEventListener('click', function(){
 
 });
 });
+
+
+// ------------ Form settings
+// ------------ Gestion du formulaire
+
+    // Event for a reset button
+    // Event bouton Réinitialiser: efface tout le contenu des inputs
+
+    const reset= document.getElementById("reset");
+    reset.addEventListener('click', function(){
+        firstNameError.innerText="";
+        lastNameError.innerText="";
+        addressError.innerText="";
+        cityError.innerText="";
+        emailError.innerText="";
+    })
+
+    // Checking input validity 
+    // Vérification des données entrées.
+    const submitValidation= document.getElementById("order");
+        const formInputs=document.querySelectorAll('div.cart__order__form__question > input');
+        const formp=document.querySelectorAll('div.cart__order__form__question > p');
+
+        let firstName=document.getElementById("firstName");
+        let firstNameError=document.getElementById("firstNameErrorMsg");
+        let lastName = document.getElementById("lastName");
+        let lastNameError=document.getElementById("lastNameErrorMsg");
+        let address= document.getElementById("address");
+        let addressError=document.getElementById("addressErrorMsg");
+        let city=document.getElementById("city");
+        let cityError=document.getElementById("cityErrorMsg");
+        let email=document.getElementById("email");
+        let emailError=document.getElementById("emailErrorMsg");
+            let products=[];
+            let contact={};
+    
+    // Event for form validation and sending
+    // Evenement pour validation et envoi des formulaires
+    submitValidation.addEventListener('click', async (e)=>{
+        // RegEx settings for the check
+        // COnfiguration des regEx pour la validation 
+        let nameRegEx= /^[a-zA-ZéèîïÉÈÊÎÏ][a-zéèêàçîïüöô]+([-'\s][a-zA-ZéèîïÉÈÎÏ]+)?/;
+        let mailRegEx= /(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
+        let localisationRegEx= /^[a-zA-Z0-9éèîïÉÈÊÎÏ] [a-zéèêàçîïüöô]+([-'\s][a-zA-ZéèîïÉÈÎÏ]+)?/; ;
+        let noProblem=true;
+            // validation function 
+            // fonction de validition et d'envoi des valeurs des input. 
+            formInputs.forEach(function(el){
+              let errorMsg=document.getElementById(`${el.id}ErrorMsg`);  
+              
+
+            if (el.validity.valueMissing){
+                e.preventDefault();   
+                errorMsg.innerText='Donnée Manquante';
+                errorMsg.style.color="red";
+                noProblem= false;
+            }
+            else {
+              switch (el.id){
+                case 'firstName':
+                    if (nameRegEx.test(firstName.value)==false){
+                        e.preventDefault();
+                        firstNameError.innerText='Format incorrect';
+                        firstNameError.style.color="orange";
+                        noProblem= false;
+                    };
+                    break;
+                
+                case 'lastName':
+                    if(nameRegEx.test(lastName.value)==false){
+                        e.preventDefault();
+                        lastNameError.innerText='Format incorrect';
+                        lastNameError.style.color="orange";
+                        noProblem= false;    
+                    };
+                    break;
+                
+                case 'email':
+                    if (mailRegEx.test(email.value)==false){
+                        e.preventDefault();
+                        emailError.innerText='Format incorrect';
+                        emailError.style.color="orange";
+                        noProblem= false;
+                    };
+                    break;
+              }}  
+        });
+    
+    
+    
+
+        
+        
+
+    });
