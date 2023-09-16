@@ -48,6 +48,7 @@ function findByName(){
     // Color form options
     // Création des options du formulaire de choix de couleur
     const colorsItem= document.querySelector("#colors");
+    // document.getElementById("colors").required;
     for (let i=0; i<item.colors.length;i++){ 
       const color=item.colors[i];
       const colorValue= document.createElement("option");
@@ -59,3 +60,35 @@ function findByName(){
   }
   
   generateProductPage(item);
+
+// ----------- Cart handling
+// ----------- Gestion du panier
+
+    // Event for saving items into the cart
+    // Event lié à l'enregistrement du formulaire et l'envoi au panier
+
+const boutonAddToCart= document.querySelector("#addToCart");
+boutonAddToCart.addEventListener('click', function() {
+    
+let product= {
+    id: item._id,
+    name:item.name,
+    qty:parseInt(document.querySelector("#quantity").value,10),
+    color:document.getElementById("colors").value
+  };
+
+//   deleteCart();
+
+  let cart=getCart();  
+  console.log(cart);
+  
+  let oldProduct = cart.find(i => i.name === product.name && i.color === product.color);
+  if (oldProduct) {
+    oldProduct.qty += product.qty;
+  } else {
+    cart.push(product);
+  }
+
+  saveCart(cart);
+   console.log(localStorage);
+});
