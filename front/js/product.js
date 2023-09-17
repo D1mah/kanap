@@ -75,13 +75,17 @@ function findByName(){
 
 const boutonAddToCart= document.querySelector("#addToCart");
 boutonAddToCart.addEventListener('click', function() {
-    
-let product= {
-    id: item._id,
-    name:item.name,
-    qty:parseInt(document.querySelector("#quantity").value,10),
-    color:document.getElementById("colors").value
-  };
+ 
+  const quantity=parseInt(document.querySelector("#quantity").value,10);
+  if(quantity!=0){
+
+    let product= {
+        id: item._id,
+        name:item.name,
+        qty:quantity,
+        color:document.getElementById("colors").value
+      };
+}
 
 //   deleteCart();
 

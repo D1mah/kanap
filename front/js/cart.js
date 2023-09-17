@@ -94,7 +94,7 @@ function generateCartPage(cart){
                                         deleteElement.innerText="Supprimer";
     
     // Tags attachement
-    // Rattachement des différentes balises au DOM
+    // Rattachement des différentes balises au DO
      cartSection.appendChild(itemElement);
      itemElement.appendChild(imageSection);
          imageSection.appendChild(imageElement);
