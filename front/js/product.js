@@ -27,6 +27,12 @@ function findByName(){
 // ------------ Specific product generating function
   function generateProductPage(item){
     
+    // Browser tab format in function of the product.
+    // Adaptation du titre de l'onglet selon le produit.
+    const title=document.querySelector('#headTitle');
+    title.innerHTML="";
+    title.innerText=item.name;
+    
     // Product element in product.html statement.
     // Récupération de l'élément du DOM qui accueillera le produit
     const sectionItem= document.querySelector(".item");
