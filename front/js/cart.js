@@ -312,5 +312,4 @@ deleteItems.forEach(el => {el.addEventListener('click', function(){
         // console.log(data);
         
         location.href=`./confirmation.html?id=${data.orderId}`;
-        // localStorage.clear();
     });
