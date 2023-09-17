@@ -150,7 +150,7 @@ qtyInput.forEach(el => {el.addEventListener('change', function(){
     let qtyDifference=parseInt(itemToModify.qty)-parseInt(initialQty);
     qtyTotal+=qtyDifference;
 
-    let priceDifference = (qtyDifference *parseInt(products.find(item=>item._id ===itemToModify.id).price));
+    let priceDifference = (qtyDifference *parseInt(produits.find(item=>item._id ===itemToModify.id).price));
     priceTotal+=priceDifference;
     totalQuantity.innerText=qtyTotal;
     totalPrice.innerText=priceTotal;
@@ -218,6 +218,7 @@ deleteItems.forEach(el => {el.addEventListener('click', function(){
     // Event for form validation and sending
     // Evenement pour validation et envoi des formulaires
     submitValidation.addEventListener('click', async (e)=>{
+        e.preventDefault();
         // RegEx settings for the check
         // COnfiguration des regEx pour la validation 
         let nameRegEx= /^[a-zA-ZéèîïÉÈÊÎÏ][a-zéèêàçîïüöô]+([-'\s][a-zA-ZéèîïÉÈÎÏ]+)?/;
@@ -267,10 +268,49 @@ deleteItems.forEach(el => {el.addEventListener('click', function(){
               }}  
         });
     
+        // Event to delete error messages when writting into the input
+    // Event pour effacer les messages d'erreur à l'écriture dans un Input.
+    formInputs.forEach(el=>el.addEventListener('keydown', function(){
+        let alertToErase=document.getElementById(`${el.id}ErrorMsg`);
+        alertToErase.innerText="";
+    }));
     
-    
+    // Préparation des variables contenant les données à envoyer.
+    //Données liées aux articles de la commande 
+    // Id from the Items in the cart, soon to be purchased
+    cart.forEach(function(el){
+        products.push(el.id);
+    });
 
-        
-        
+// Données liées aux informations acheteurs
+// Buyers informations
+    contact={"firstName":firstName.value,
+            "lastName":lastName.value,
+            "address":address.value,
+            "city":city.value,
+            "email":email.value};
 
+// object to send
+// objet à envoyer
+    const order=JSON.stringify({contact, products});
+    console.log(order);
+
+// Configuration des routes post
+    // post request
+        let data;
+ try{const result= await fetch('http://localhost:3000/api/products/order', {
+            method: 'POST',
+            headers:{'Content-Type':'application/json; charset=utf-8'},
+            body: order
+        })
+        data= await result.json();
+    } catch (error) {
+            // TypeError: Failed to fetch
+            console.log('There was an error', error);
+          }
+
+        // console.log(data);
+        
+        location.href=`./confirmation.html?id=${data.orderId}`;
+        // localStorage.clear();
     });
