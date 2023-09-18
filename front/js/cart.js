@@ -213,61 +213,112 @@ deleteItems.forEach(el => {el.addEventListener('click', function(){
         let email=document.getElementById("email");
         let emailError=document.getElementById("emailErrorMsg");
             let products=[];
-            let contact={};
+            let contact= {};
     
+    
+        
+        // validation function 
+        // fonction de validition et d'envoi des valeurs des input. 
+        // function formError(formInputs, e){
+            
+        //     formInputs.forEach(function(el){
+        //         let errorMsg=document.getElementById(`${el.id}ErrorMsg`);  
+                
+  
+        //       if (el.validity.valueMissing){
+        //           e.preventDefault();   
+        //           errorMsg.innerText='Donnée Manquante';
+        //           errorMsg.style.color="red";
+        //           noProblem= false;
+        //       }
+        //       else {
+        //         switch (el.id){
+        //           case 'firstName':
+        //               if (nameRegEx.test(firstName.value)===false){
+        //                   e.preventDefault();
+        //                   firstNameError.innerText='Format incorrect';
+        //                   firstNameError.style.color="orange";
+        //                   noProblem= false;
+        //               };
+        //               break;
+                  
+        //           case 'lastName':
+        //               if(nameRegEx.test(lastName.value)===false){
+        //                   e.preventDefault();
+        //                   lastNameError.innerText='Format incorrect';
+        //                   lastNameError.style.color="orange";
+        //                   noProblem= false;    
+        //               };
+        //               break;
+                  
+        //           case 'email':
+        //               if (mailRegEx.test(email.value)===false){
+        //                   e.preventDefault();
+        //                   emailError.innerText='Format incorrect';
+        //                   emailError.style.color="orange";
+        //                   noProblem= false;
+        //               };
+        //               break;
+                
+        //         }}  
+        //   });
+        // }
+
     // Event for form validation and sending
     // Evenement pour validation et envoi des formulaires
     submitValidation.addEventListener('click', async (e)=>{
         e.preventDefault();
-        // RegEx settings for the check
+       
+         // RegEx settings for the check
         // COnfiguration des regEx pour la validation 
         let nameRegEx= /^[a-zA-ZéèîïÉÈÊÎÏ][a-zéèêàçîïüöô]+([-'\s][a-zA-ZéèîïÉÈÎÏ]+)?/;
         let mailRegEx= /(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))/;
         let localisationRegEx= /^[a-zA-Z0-9éèîïÉÈÊÎÏ] [a-zéèêàçîïüöô]+([-'\s][a-zA-ZéèîïÉÈÎÏ]+)?/; ;
         let noProblem=true;
-            // validation function 
-            // fonction de validition et d'envoi des valeurs des input. 
-            formInputs.forEach(function(el){
-              let errorMsg=document.getElementById(`${el.id}ErrorMsg`);  
+        
+        // fonction de validation
+        formInputs.forEach(function(el){
+            let errorMsg=document.getElementById(`${el.id}ErrorMsg`);  
+            
+          if (el.validity.valueMissing){
+              e.preventDefault();   
+              errorMsg.innerText='Donnée Manquante';
+              errorMsg.style.color="red";
+              noProblem= false;
+          }
+          else {
+            switch (el.id){
+              case 'firstName':
+                  if (nameRegEx.test(firstName.value)==false){
+                      e.preventDefault();
+                      firstNameError.innerText='Format incorrect';
+                      firstNameError.style.color="orange";
+                      noProblem= false;
+                  };
+                  break;
               
+              case 'lastName':
+                  if(nameRegEx.test(lastName.value)==false){
+                      e.preventDefault();
+                      lastNameError.innerText='Format incorrect';
+                      lastNameError.style.color="orange";
+                      noProblem= false;    
+                  };
+                  break;
+              
+              case 'email':
+                  if (mailRegEx.test(email.value)==false){
+                      e.preventDefault();
+                      emailError.innerText='Format incorrect';
+                      emailError.style.color="orange";
+                      noProblem= false;
+                  };
+                  break;
+            
+            }}  
+      });    
 
-            if (el.validity.valueMissing){
-                e.preventDefault();   
-                errorMsg.innerText='Donnée Manquante';
-                errorMsg.style.color="red";
-                noProblem= false;
-            }
-            else {
-              switch (el.id){
-                case 'firstName':
-                    if (nameRegEx.test(firstName.value)==false){
-                        e.preventDefault();
-                        firstNameError.innerText='Format incorrect';
-                        firstNameError.style.color="orange";
-                        noProblem= false;
-                    };
-                    break;
-                
-                case 'lastName':
-                    if(nameRegEx.test(lastName.value)==false){
-                        e.preventDefault();
-                        lastNameError.innerText='Format incorrect';
-                        lastNameError.style.color="orange";
-                        noProblem= false;    
-                    };
-                    break;
-                
-                case 'email':
-                    if (mailRegEx.test(email.value)==false){
-                        e.preventDefault();
-                        emailError.innerText='Format incorrect';
-                        emailError.style.color="orange";
-                        noProblem= false;
-                    };
-                    break;
-              }}  
-        });
-    
+      console.log(noProblem);
         // Event to delete error messages when writting into the input
     // Event pour effacer les messages d'erreur à l'écriture dans un Input.
     formInputs.forEach(el=>el.addEventListener('keydown', function(){
@@ -284,34 +335,43 @@ deleteItems.forEach(el => {el.addEventListener('click', function(){
 
 // Données liées aux informations acheteurs
 // Buyers informations
-    contact={"firstName":firstName.value,
+    contact= {"firstName":firstName.value,
             "lastName":lastName.value,
             "address":address.value,
             "city":city.value,
             "email":email.value};
 
+            if(products.length!=0 && noProblem===true ){
 // object to send
 // objet à envoyer
     const order=JSON.stringify({contact, products});
     console.log(order);
+    // console.log(contact);
+    console.log(products);
 
 // Configuration des routes post
     // post request
         let data;
- try{const result= await fetch('http://localhost:3000/api/products/order', {
-            method: 'POST',
-            headers:{'Content-Type':'application/json; charset=utf-8'},
-            body: order
-        })
-        data= await result.json();
+    try{
+        const result= await fetch('http://localhost:3000/api/products/order', {
+                method: 'POST',
+                headers:{
+                    'Accept': 'application/json; charset=UTF-8',
+                    'Content-Type':'application/json; charset=UTF-8'},
+                body: order
+            });
+         data= await result.json();
     } catch (error) {
-            // TypeError: Failed to fetch
-            console.log('There was an error', error);
-          }
+        // TypeError: Failed to fetch
+        console.log('There was an error', error);
+    }
 
-        // console.log(data);
+        console.log(data);
         
         location.href=`./confirmation.html?id=${data.orderId}`;
         localStorage.clear();
-
+        
+        }
+    
+    
     });

@@ -77,27 +77,29 @@ const boutonAddToCart= document.querySelector("#addToCart");
 boutonAddToCart.addEventListener('click', function() {
  
   const quantity=parseInt(document.querySelector("#quantity").value,10);
-  if(quantity!=0){
+  let product= {};
+  
 
-    let product= {
+    product= {
         id: item._id,
         name:item.name,
         qty:quantity,
         color:document.getElementById("colors").value
       };
-}
 
-//   deleteCart();
+
+  // deleteCart();
 
   let cart=getCart();  
   console.log(cart);
-  
-  let oldProduct = cart.find(i => i.name === product.name && i.color === product.color);
-  if (oldProduct) {
-    oldProduct.qty += product.qty;
-  } else {
-    cart.push(product);
-  }
+  if(product.qty!=0 && product.color!==""){
+    let oldProduct = cart.find(i => i.name === product.name && i.color === product.color);
+    if (oldProduct) {
+      oldProduct.qty += product.qty;
+    } else {
+      cart.push(product);
+    }
+}
 
   saveCart(cart);
    console.log(localStorage);
