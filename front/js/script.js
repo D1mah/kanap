@@ -27,7 +27,7 @@ for (let i = 0; i < products.length; i++) {
       const linkName= preLinkName.toLowerCase().replace(" ", ".");
       const productLink= document.createElement("a");
       productLink.setAttribute("href",`./product.html?name=${linkName}`);
-      productLink.setAttribute("target", "blank");
+      // productLink.setAttribute("target", "blank");
       productLink.id="articleLink";
 
 // unique tag for one product creation

@@ -62,6 +62,7 @@ function findByName(){
       colorValue.innerText=color;
       colorsItem.appendChild(colorValue);
     }
+
     
   }
   
@@ -70,23 +71,47 @@ function findByName(){
 // ----------- Cart handling
 // ----------- Gestion du panier
 
-    // Event for saving items into the cart
+    // Error message if neither color or quantity not selected 
+    let colorError=document.querySelector("#colorErrorMsg");
+    let quantityError= document.querySelector("#quantityErrorMsg");
+
+// Event for saving items into the cart
     // Event lié à l'enregistrement du formulaire et l'envoi au panier
 
 const boutonAddToCart= document.querySelector("#addToCart");
-boutonAddToCart.addEventListener('click', function() {
- 
+// boutonAddToCart.addEventListener('click', function() {
+  boutonAddToCart.addEventListener('click', (e)=> {
+
+
   const quantity=parseInt(document.querySelector("#quantity").value,10);
+  const colorChoice= document.getElementById("colors").value
   let product= {};
+
+  // if 
+  // (quantity===0){
+  //   e.preventDefault;
+  //   colorError.innerText="Choisissez une couleur";
+  //   colorError.style.color="red";
+    
+  // }
+  if (colorChoice===""){
+    e.preventDefault;
+    colorError.innerText="Choisissez une couleur";
+    colorError.style.color="red";
+
+    document.getElementById("colors").addEventListener("change", function(){
+      let alertToErase=document.getElementById('colorErrorMsg');
+            alertToErase.innerText="";
+    });
+  }else{
   
 
     product= {
         id: item._id,
         name:item.name,
         qty:quantity,
-        color:document.getElementById("colors").value
+        color:colorChoice
       };
-
 
   // deleteCart();
 
@@ -103,4 +128,6 @@ boutonAddToCart.addEventListener('click', function() {
 
   saveCart(cart);
    console.log(localStorage);
+  }
+  
 });
