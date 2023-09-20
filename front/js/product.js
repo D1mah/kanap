@@ -126,6 +126,15 @@ const boutonAddToCart= document.querySelector("#addToCart");
     }
 }
 
+let successMsg=document.getElementById("itemAdded");
+successMsg.innerText="Le kanap a été ajouté au panier";
+successMsg.style.color="#002E3D";
+
+setTimeout(()=>{
+  successMsg.style.color="#3498DB";
+  successMsg.style.transition="color 1s";
+}, 2000)
+
   saveCart(cart);
    console.log(localStorage);
   }
