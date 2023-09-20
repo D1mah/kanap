@@ -118,8 +118,11 @@ h2 {
 }
 .cart__order__form__submit {
 	display: flex;
-	justify-content: center;
+	flex-direction:column;
+	align-items: center;
+	/* justify-content: center; */
 }
+
 .cart__order__form__submit input {
 	font-size: 22px;
 	border-radius: 40px;

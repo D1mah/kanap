@@ -276,6 +276,11 @@ deleteItems.forEach(el => {el.addEventListener('click', function(){
         let localisationRegEx= /^[a-zA-Z0-9éèîïÉÈÊÎÏ] [a-zéèêàçîïüöô]+([-'\s][a-zA-ZéèîïÉÈÎÏ]+)?/; ;
         let noProblem=true;
         
+        // configuration du messages d'erreur si panier vide
+        const submitError=document.getElementById("submitErrorMsg");
+        submitError.innerText="Le panier manque de Kanap !";
+        submitError.style.color="#3498DB";
+        
         // fonction de validation
         formInputs.forEach(function(el){
             let errorMsg=document.getElementById(`${el.id}ErrorMsg`);  
@@ -342,6 +347,7 @@ deleteItems.forEach(el => {el.addEventListener('click', function(){
             "email":email.value};
 
             if(products.length!=0 && noProblem===true ){
+
 // object to send
 // objet à envoyer
     const order=JSON.stringify({contact, products});
@@ -371,7 +377,17 @@ deleteItems.forEach(el => {el.addEventListener('click', function(){
         location.href=`./confirmation.html?id=${data.orderId}`;
         localStorage.clear();
         
-        }
+        }else if (products.length===0){
+                submitError.style.color="red";
+                setTimeout(()=>{
+                    submitError.style.color="#3498DB";
+                    submitError.style.transition="color 2s";
+                }, 2000);
+
+
+            } 
+            
+        
     
     
     });
