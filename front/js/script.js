@@ -23,10 +23,13 @@ for (let i = 0; i < products.length; i++) {
 
 // article links creation
 // Création des liens article 
-      const preLinkName= strNoAccent(article.name);
-      const linkName= preLinkName.toLowerCase().replace(" ", ".");
+      // Base de code pour utiliser le nom plutot que l'id dans l'URL
+      // const preLinkName= strNoAccent(article.name);
+      // const linkName= preLinkName.toLowerCase().replace(" ", ".");
       const productLink= document.createElement("a");
-      productLink.setAttribute("href",`./product.html?name=${linkName}`);
+      // productLink.setAttribute("href",`./product.html?name=${linkName}`);
+      productLink.setAttribute("href",`./product.html?id=${article._id}`);
+
       // productLink.setAttribute("target", "blank");
       productLink.id="articleLink";
 

@@ -10,18 +10,30 @@ const products= await reponse.json();
 // ------------ Fetching  system to get item from name in URL
 // ------------ Récupération du produit par recherche du nom dans l'URL
 
-function findByName(){
+// function findByName(){
+//     const urlObj= new URL(window.location.href);
+//     const preName= urlObj.searchParams.get("name").replace("."," ");
+//   for (let i=0; i<products.length; i++){
+//       const article=products[i];
+//       if (preName===strNoAccent(article.name.toLowerCase())){        
+//         return article;
+//       }
+//     }
+//   }
+
+//   const item= findByName();
+
+  function findById(){
     const urlObj= new URL(window.location.href);
-    const preName= urlObj.searchParams.get("name").replace("."," ");
-  for (let i=0; i<products.length; i++){
+    const itemId=urlObj.searchParams.get("id");
+    for (let i=0; i<products.length; i++){
       const article=products[i];
-      if (preName===strNoAccent(article.name.toLowerCase())){        
+      if (itemId===article._id){
         return article;
       }
     }
   }
-
-  const item= findByName();
+  const item= findById();
 
 // ------------ fonction générant la page produit en fonction de l'item
 // ------------ Specific product generating function
